@@ -101,12 +101,12 @@ class Window(QtWidgets.QWidget):
 
 
 class GLWidget(QtOpenGL.QGLWidget):
+    xRotationChanged = QtCore.Signal(int)
+    yRotationChanged = QtCore.Signal(int)
+    zRotationChanged = QtCore.Signal(int)
+
     def __init__(self, parent=None):
         QtOpenGL.QGLWidget.__init__(self, parent)
-
-        xRotationChanged = QtCore.Signal(int)
-        yRotationChanged = QtCore.Signal(int)
-        zRotationChanged = QtCore.Signal(int)
 
         self.object = 0
         self.xRot = 0
