@@ -2,8 +2,7 @@
 
 ############################################################################
 ##
-## Copyright (C) 2013 Riverbank Computing Limited.
-## Copyright (C) 2016 The Qt Company Ltd.
+## Copyright (C) 2017 The Qt Company Ltd.
 ## Contact: http://www.qt.io/licensing/
 ##
 ## This file is part of the PySide examples of the Qt Toolkit.
@@ -41,11 +40,11 @@
 ##
 ############################################################################
 
-"""PySide2 port of the opengl/legacy/hellogl example from Qt v5.x"""
+"""PySide2 port of the opengl/legacy/hellogl example from Qt v5.x modified to use a QOpenGLWidget to demonstrate porting from QGLWidget to QOpenGLWidget"""
 
 import sys
 import math
-from PySide2 import QtCore, QtGui, QtWidgets, QtOpenGL
+from PySide2 import QtCore, QtGui, QtWidgets
 
 try:
     from OpenGL import GL
@@ -83,7 +82,7 @@ class Window(QtWidgets.QWidget):
         self.ySlider.setValue(160 * 16)
         self.zSlider.setValue(90 * 16)
 
-        self.setWindowTitle(self.tr("Hello GL"))
+        self.setWindowTitle(self.tr("QOpenGLWidget"))
 
     def createSlider(self, changedSignal, setterSlot):
         slider = QtWidgets.QSlider(QtCore.Qt.Vertical)
@@ -100,13 +99,13 @@ class Window(QtWidgets.QWidget):
         return slider
 
 
-class GLWidget(QtOpenGL.QGLWidget):
+class GLWidget(QtWidgets.QOpenGLWidget):
     xRotationChanged = QtCore.Signal(int)
     yRotationChanged = QtCore.Signal(int)
     zRotationChanged = QtCore.Signal(int)
 
     def __init__(self, parent=None):
-        QtOpenGL.QGLWidget.__init__(self, parent)
+        QtWidgets.QOpenGLWidget.__init__(self, parent)
 
         self.object = 0
         self.xRot = 0
@@ -138,24 +137,25 @@ class GLWidget(QtOpenGL.QGLWidget):
         if angle != self.xRot:
             self.xRot = angle
             self.emit(QtCore.SIGNAL("xRotationChanged(int)"), angle)
-            self.updateGL()
+            self.update()
 
     def setYRotation(self, angle):
         angle = self.normalizeAngle(angle)
         if angle != self.yRot:
             self.yRot = angle
             self.emit(QtCore.SIGNAL("yRotationChanged(int)"), angle)
-            self.updateGL()
+            self.update()
 
     def setZRotation(self, angle):
         angle = self.normalizeAngle(angle)
         if angle != self.zRot:
             self.zRot = angle
             self.emit(QtCore.SIGNAL("zRotationChanged(int)"), angle)
-            self.updateGL()
+            self.update()
 
     def initializeGL(self):
-        self.qglClearColor(self.trolltechPurple.darker())
+        darkTrolltechPurple = self.trolltechPurple.darker()
+        GL.glClearColor(darkTrolltechPurple.redF(), darkTrolltechPurple.greenF(), darkTrolltechPurple.blueF(), darkTrolltechPurple.alphaF())
         self.object = self.makeObject()
         GL.glShadeModel(GL.GL_FLAT)
         GL.glEnable(GL.GL_DEPTH_TEST)
@@ -248,7 +248,7 @@ class GLWidget(QtOpenGL.QGLWidget):
         return genList
 
     def quad(self, x1, y1, x2, y2, x3, y3, x4, y4):
-        self.qglColor(self.trolltechGreen)
+        GL.glColor(self.trolltechGreen.redF(), self.trolltechGreen.greenF(), self.trolltechGreen.blueF(), self.trolltechGreen.alphaF())
 
         GL.glVertex3d(x1, y1, +0.05)
         GL.glVertex3d(x2, y2, +0.05)
@@ -261,7 +261,8 @@ class GLWidget(QtOpenGL.QGLWidget):
         GL.glVertex3d(x1, y1, -0.05)
 
     def extrude(self, x1, y1, x2, y2):
-        self.qglColor(self.trolltechGreen.darker(250 + int(100 * x1)))
+        darkTrolltechGreen = self.trolltechGreen.darker(250 + int(100 * x1))
+        GL.glColor(darkTrolltechGreen.redF(), darkTrolltechGreen.greenF(), darkTrolltechGreen.blueF(), darkTrolltechGreen.alphaF())
 
         GL.glVertex3d(x1, y1, -0.05)
         GL.glVertex3d(x2, y2, -0.05)
