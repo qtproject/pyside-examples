@@ -66,7 +66,7 @@ def getMemoryUsage():
                 command = line[0:23].strip()
                 if command.endswith('.exe'):
                     command = command[0:len(command) - 4]
-                memoryUsage = float(line[64:74].strip().replace(',', ''))
+                memoryUsage = float(line[64:74].strip().replace(',', '').replace('.', ''))
                 legend = ''
                 if memoryUsage > 10240:
                     legend = '{} {}M'.format(command, round(memoryUsage / 1024))
