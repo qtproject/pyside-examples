@@ -42,6 +42,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 from PySide2.QtCore import QTimer, QUrl
 from PySide2.QtGui import QGuiApplication
@@ -55,7 +56,10 @@ if __name__ == '__main__':
     timer.start(2000)
 
     view = QQuickView()
-    view.setSource(QUrl('view.qml'))
+    qmlFile = os.path.join(os.path.dirname(__file__), 'view.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
     root = view.rootObject()
 
     timer.timeout.connect(root.updateRotater)

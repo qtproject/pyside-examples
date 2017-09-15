@@ -42,6 +42,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 from PySide2.QtCore import QObject, QUrl
 from PySide2.QtGui import QGuiApplication
@@ -54,7 +55,10 @@ def sayThis(s):
 if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
     view = QQuickView()
-    view.setSource(QUrl('view.qml'))
+    qmlFile = os.path.join(os.path.dirname(__file__), 'view.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
 
     root = view.rootObject()
     button = root.findChild(QObject, "buttonMouseArea")

@@ -42,8 +42,9 @@
 
 from __future__ import print_function
 
+import os
 import sys
-from PySide2.QtCore import QAbstractListModel, Qt
+from PySide2.QtCore import QAbstractListModel, Qt, QUrl
 from PySide2.QtGui import QGuiApplication
 import PySide2.QtQml
 from PySide2.QtQuick import QQuickView
@@ -89,7 +90,10 @@ if __name__ == '__main__':
     myModel.populate()
 
     view.rootContext().setContextProperty("myModel", myModel)
-    view.setSource('view.qml')
+    qmlFile = os.path.join(os.path.dirname(__file__), 'view.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
     view.show()
 
     app.exec_()
