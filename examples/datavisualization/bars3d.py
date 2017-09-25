@@ -50,16 +50,10 @@ from PySide2.QtWidgets import QApplication, QSizePolicy, QMainWindow, QWidget
 from PySide2.QtDataVisualization import QtDataVisualization
 
 def dataToBarDataRow(data):
-    result = []
-    for d in data:
-        result.append(QtDataVisualization.QBarDataItem(d))
-    return result
+    return list(QtDataVisualization.QBarDataItem(d) for d in data)
 
 def dataToBarDataArray(data):
-    result = []
-    for row in data:
-        result.append(dataToBarDataRow(row))
-    return result
+    return list(dataToBarDataRow(row) for row in data)
 
 class MainWindow(QMainWindow):
 
