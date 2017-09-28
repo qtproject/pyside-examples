@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
         playMenu = self.menuBar().addMenu("&Play")
         playIcon = self.style().standardIcon(QStyle.SP_MediaPlay)
         self.playAction = toolBar.addAction(playIcon, "Play")
-        self.playAction.triggered.connect(self.player, SLOT("play()"))
+        self.playAction.triggered.connect(self.player.play)
         playMenu.addAction(self.playAction)
 
         previousIcon = self.style().standardIcon(QStyle.SP_MediaSkipBackward)
@@ -83,17 +83,17 @@ class MainWindow(QMainWindow):
 
         pauseIcon = self.style().standardIcon(QStyle.SP_MediaPause)
         self.pauseAction = toolBar.addAction(pauseIcon, "Pause")
-        self.pauseAction.triggered.connect(self.player, SLOT("pause()"))
+        self.pauseAction.triggered.connect(self.player.pause)
         playMenu.addAction(self.pauseAction)
 
         nextIcon = self.style().standardIcon(QStyle.SP_MediaSkipForward)
         self.nextAction = toolBar.addAction(nextIcon, "Next")
-        self.nextAction.triggered.connect(self.playlist, SLOT("next()"))
+        self.nextAction.triggered.connect(self.playlist.next)
         playMenu.addAction(self.nextAction)
 
         stopIcon = self.style().standardIcon(QStyle.SP_MediaStop)
         self.stopAction = toolBar.addAction(stopIcon, "Stop")
-        self.stopAction.triggered.connect(self.player, SLOT("stop()"))
+        self.stopAction.triggered.connect(self.player.stop)
         playMenu.addAction(self.stopAction)
 
         self.volumeSlider = QSlider()
@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
         self.volumeSlider.setTickInterval(10)
         self.volumeSlider.setTickPosition(QSlider.TicksBelow)
         self.volumeSlider.setToolTip("Volume")
-        self.volumeSlider.valueChanged.connect(self.player, SLOT("setVolume(int)"))
+        self.volumeSlider.valueChanged.connect(self.player.setVolume)
         toolBar.addWidget(self.volumeSlider)
 
         aboutMenu = self.menuBar().addMenu("&About")
