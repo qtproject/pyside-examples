@@ -42,6 +42,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 from PySide2.QtCore import QUrl
 from PySide2.QtGui import QGuiApplication
@@ -60,8 +61,10 @@ if __name__ == '__main__':
     ctxt = view.rootContext()
     ctxt.setContextProperty("myModel", dataList)
 
-    url = QUrl('view.qml')
-    view.setSource(url)
+    qmlFile = os.path.join(os.path.dirname(__file__), 'view.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
     view.show()
 
     app.exec_()

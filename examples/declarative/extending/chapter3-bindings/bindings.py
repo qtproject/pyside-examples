@@ -98,7 +98,10 @@ if __name__ == '__main__':
 
     view = QQuickView()
     view.setResizeMode(QQuickView.SizeRootObjectToView)
-    view.setSource(QUrl.fromLocalFile('app.qml'))
+    qmlFile = os.path.join(os.path.dirname(__file__), 'app.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
     view.show()
     res = app.exec_()
     # Deleting the view before it goes out of scope is required to make sure all child QML instances

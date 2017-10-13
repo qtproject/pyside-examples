@@ -42,6 +42,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 from PySide2.QtCore import QObject, QUrl, Slot
 from PySide2.QtGui import QGuiApplication
@@ -68,7 +69,10 @@ if __name__ == '__main__':
     context = view.rootContext()
     context.setContextProperty("rotatevalue", rotatevalue)
 
-    view.setSource(QUrl('view.qml'))
+    qmlFile = os.path.join(os.path.dirname(__file__), 'view.qml')
+    view.setSource(QUrl.fromLocalFile(qmlFile))
+    if view.status() == QQuickView.Error:
+        sys.exit(-1)
     view.show()
     res = app.exec_()
     # Deleting the view before it goes out of scope is required to make sure all child QML instances
